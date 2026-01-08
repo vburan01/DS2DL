@@ -372,7 +372,7 @@ def UMAE_run(
     print(f"Extraction completed in {total_extraction_time:.2f} seconds ({total_extraction_time/60:.2f} minutes)")
     
     os.makedirs(output_dir, exist_ok=True)
-    output_filename = os.path.join(output_dir, f"{dataset}__FPS{num_train_pixels}_MR{mask_ratio}.mat")
+    output_filename = os.path.join(output_dir, f"{dataset}_FPS{num_train_pixels}_MR{mask_ratio}.mat")
     savemat(output_filename, {
         'latent_features': all_latent_features.astype(np.float32),
         'latent_spatial': latent_spatial.astype(np.float32),
