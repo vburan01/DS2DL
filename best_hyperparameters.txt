@@ -1,0 +1,305 @@
+This file contains the best hyperparameters for the DS2DL algorithm, as 
+presented in the paper for reproducibility.
+
+n_t : # of training pixels
+R_m : Mask Ratio
+nk : # representative pixels in each superpixel
+p : # of superpixels
+l : Spatial radius R
+NNs : # nearest neighbors
+prctiles: percentiles 
+
+Botswana Dataset: 
+
+    DS2DL:
+
+        Best Joint OA, AA, Kappa: 
+
+            UMAE parameters:
+
+            n_t  = 600
+            R_m = 0.65
+
+            Modified S2DL parameters: 
+            
+            nk = 5
+            p = 1000
+            l  = 30 
+            NNs = [30,40,50]
+            prctiles = [30,50,70,90]
+            numReplicates = 1
+
+        Best NMI 
+
+         UMAE parameters:
+
+            n_t = 600
+            R_m = 0.65
+
+            Modified S2DL parameters: 
+            
+            nk = 5
+            p = 1000
+            l  = 30 
+            NNs = [30,40,50]
+            prctiles = [30,50,70,90]
+            numReplicates = 1
+
+        Best 1x Purity
+
+            UMAE parameters:
+
+                    n_t = 400
+                    R_m = 0.5
+
+                    Modified S2DL parameters: 
+                    
+                    nk = 5
+                    p = 1800
+                    l  = 14
+                    NNs = 50
+                    prctiles = 50
+                    numReplicates = 1    
+
+        Best 2x Purity 
+
+            UMAE parameters:
+
+                n_t = 200
+                R_m = 0.65
+
+                Modified S2DL parameters: 
+                
+                nk = 3
+                p = 2200
+                l  = 26
+                NNs = 30
+                prctiles = 50
+                numReplicates = 1
+
+        Best 3x Purity
+
+            UMAE parameters:
+
+                n_t = 200
+                R_m = 0.65
+
+                Modified S2DL parameters: 
+                
+                nk = 5
+                p = 2400
+                l  = 24
+                NNs = 30
+                prctiles = 50
+                numReplicates = 1
+    S2DL:
+
+        Best Joint OA, AA, Kappa:
+
+            S2DL Parameters: 
+
+                nk = 3
+                p = 1400
+                l  = 24
+                NNs = [30,40,50]
+                prctiles = [30,50,70,90]
+                numReplicates = 1
+        
+        Best NMI:
+
+            S2DL Parameters: 
+
+            nk = 3
+            p = 2200
+            l  = 14
+            NNs = 30
+            prctiles = 70
+            numReplicates = 1
+
+        Best 1x Purity:
+
+            S2DL Parameters: 
+
+            nk = 3
+            p = 2400
+            l  = 12
+            NNs = 50
+            prctiles = 30
+            numReplicates = 1
+
+        Best 2x Purity:
+
+            S2DL Parameters: 
+
+            nk = 5
+            p = 1400
+            l  = 12
+            NNs = 40
+            prctiles = 30
+            numReplicates = 1
+
+        Best 3x Purity:
+
+            S2DL Parameters: 
+
+            nk = 3
+            p = 2400
+            l  = 22
+            NNs = 30
+            prctiles = 70
+            numReplicates = 1
+
+
+
+KSC Dataset: 
+
+    DS2DL:
+
+        Best Joint OA, AA, Kappa: 
+
+            UMAE parameters:
+
+                n_t = 400
+                R_m = 0.5
+
+            Modified S2DL parameters: 
+                
+                nk = 5
+                p = 1800
+                l  = 14
+                NNs = 50
+                prctiles = 50
+                numReplicates = 1
+
+        Best NMI: 
+
+            UMAE parameters:
+
+                n_t = 400
+                R_m = 0.5
+
+            Modified S2DL parameters: 
+                
+                nk = 5 
+                p = 1400
+                l  = 26 
+                NNs = 50
+                prctiles = 70
+                numReplicates = 1
+
+        Best 1x Purity:
+
+            UMAE parameters:
+
+                n_t = 400
+                R_m = 0.5
+
+                Modified S2DL parameters: 
+                
+                nk = 3
+                p = 1800
+                l  = 18
+                NNs = 30
+                prctiles = 70
+                numReplicates = 1
+
+            Best 2x Purity: 
+
+                UMAE parameters:
+
+                    n_t = 600
+                    R_m = 0.5
+
+                    Modified S2DL parameters: 
+                    
+                    nk = 5
+                    p = 1200
+                    l  = 18
+                    NNs = 40
+                    prctiles = 70
+                    numReplicates = 1
+
+            Best 3x Purity: 
+
+                UMAE parameters:
+
+                    n_t = 600
+                    R_m = 0.5
+
+                    Modified S2DL parameters: 
+                    
+                    nk = 5
+                    p = 1200
+                    l  = 22
+                    NNs = 50
+                    prctiles = 70
+                    numReplicates = 1
+
+    S2DL:
+
+        Best Joint OA, AA, Kappa:
+
+            S2DL Parameters: 
+
+                nk = 3
+                p = 1800
+                l  = 26
+                NNs = [30,40,50]
+                prctiles = [30,50,70,90]
+                numReplicates = 1
+
+        Best NMI:
+
+            S2DL Parameters: 
+
+                nk = 5
+                p = 1800
+                l  = 28
+                NNs = 30
+                prctiles = 30
+                numReplicates = 1
+
+        Best 1x Purity:
+
+            S2DL Parameters: 
+
+                nk = 3
+                p = 1800
+                l  = 18
+                NNs = 50
+                prctiles = 30
+                numReplicates = 1
+
+        Best 2x Purity:
+
+            S2DL Parameters: 
+
+                nk = 3
+                p = 1200
+                l  = 22
+                NNs = 50
+                prctiles = 30
+                numReplicates = 1
+
+        Best 3x Purity:
+
+            S2DL Parameters: 
+
+                nk = 3
+                p = 2200
+                l  = 14
+                NNs = 30
+                prctiles = 30
+                numReplicates = 1
+
+
+
+        
+
+
+
+
+
+
+
+
