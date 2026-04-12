@@ -7,7 +7,9 @@ DS2DL uses Matlab Toolboxes such as [Entropy Rate Superpixel](https://github.com
 
   # How to run DS2DL:
 
-The algorithm is split up into two parts. the "run_latent.py" file is used to generate the compressed representation of the HSI from the Unsupervised Masked Autoencoder (UMAE) in Python, and saves it as a .mat file in the "outputs" folder. Then, the "DS2DL.m" file takes in a specfied .mat file from the "outputs" folder based on user prompts, and runs the modified S2DL algorithm using the compressed latent. The steps to run this code are outlined below as follows.    
+The algorithm is split up into two parts. the "run_latent.py" file is used to generate the compressed representation of the HSI from the Unsupervised Masked Autoencoder (UMAE) in Python, and saves it as a .mat file in the "outputs" folder. Then, the "DS2DL.m" file takes in a specfied .mat file from the "outputs" folder based on user prompts, and runs the modified S2DL algorithm using the compressed latent. The steps to run this code are outlined below as follows.  
+
+ # Running Code to test for OA, AA, Kappa:
 
   1. ensure that the dependencies in "requirements.txt" are installed in your python environment.
 
@@ -24,6 +26,11 @@ The algorithm is split up into two parts. the "run_latent.py" file is used to ge
      0.65
 
   The clustering results will be displayed in the MATLAB terminal. 
+
+  # Running Code to test for Purity and NMI:
+
+  4. Run steps 1-3 from above and collect resulting output files from step 3 into a folder.
+  5. run "Find_Purity.m" (instructions in function contract in file). This saves and displays global best Purity and NMI results from all .mat files in the folder from step 4.
   
 # Reproducibility 
 
