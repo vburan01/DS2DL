@@ -10,6 +10,7 @@ from collections import OrderedDict
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 
+# helper class that randomly masks groups with designated masking ratio. 
 class RandomMaskingGenerator:
     def __init__(self, number_patches, mask_ratio):
         self.number_patches = number_patches
@@ -29,6 +30,7 @@ class RandomMaskingGenerator:
         np.random.shuffle(mask)
         return mask
 #-------------------------------------------------------------------------------
+# helper class that keeps track of averages during training. 
 class AverageMeter(object):
     def __init__(self):
         self.reset()
@@ -43,6 +45,7 @@ class AverageMeter(object):
         self.cnt += n
         self.avg = self.sum / self.cnt
 #-------------------------------------------------------------------------------        
+# helper function that forms padded HSI X_hat with mirrored edges along the HSI border to form groups.
 def mirror_hsi(height, width, band, input_normalize, patch=5):
     padding = patch // 2
     mirror_hsi = np.zeros((height + 2 * padding, width + 2 * padding, band), dtype=float)
@@ -57,12 +60,14 @@ def mirror_hsi(height, width, band, input_normalize, patch=5):
         mirror_hsi[height + padding + i, :, :] = mirror_hsi[height + padding - 1 - i, :, :]
     return mirror_hsi
 #-------------------------------------------------------------------------------
+# helper function to extract sqaure p by p patch P_i at a specified index i. 
 def gain_neighborhood_pixel(mirror_image, point, i, patch=5):
     x = point[i, 0]
     y = point[i, 1]
     temp_image = mirror_image[x:(x + patch), y:(y + patch), :]
     return temp_image
 #-------------------------------------------------------------------------------
+# Helper function to form spatial-spectral groups G_b^{(i)} for each band b 
 def gain_neighborhood_band(x_train, band, band_patch, patch=5):
     nn = band_patch // 2
     pp = (patch * patch) // 2
@@ -85,6 +90,7 @@ def gain_neighborhood_band(x_train, band, band_patch, patch=5):
             x_train_band[:, (nn + 1 + i):(nn + 2 + i), :(band - i - 1)] = x_train_reshape[:, 0:1, (i + 1):]
     return x_train_band
 #-------------------------------------------------------------------------------
+# helper function used to prepare training, testing and GT data, used to form P_i, G_b^{(i)} and V_G^{(i)} 
 def train_and_test_data(mirror_image, band, train_point, test_point, true_point, patch=5, band_patch=3, flag='train'):
     x_train = np.zeros((train_point.shape[0], patch, patch, band), dtype=np.float32)
     x_test = np.zeros((test_point.shape[0], patch, patch, band), dtype=np.float32)
@@ -105,6 +111,7 @@ def train_and_test_data(mirror_image, band, train_point, test_point, true_point,
         x_true_band = x_true
     return x_train_band, x_test_band, x_true_band
 #-------------------------------------------------------------------------------
+# function used to select a subset of training pixels by first forming X_pca, and then using FPS algorithm.
 def select_pixels_spectral_pca_fps(
     input_normalize,
     num_train_pixels,
@@ -165,7 +172,7 @@ def UMAE_run(
     mode='ViT',
     trained_model='',
 ):
-
+    # set CUDA device and seeds for reproducibility 
     os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_id)
     cudnn.benchmark = True
     np.random.seed(seed)
@@ -174,6 +181,7 @@ def UMAE_run(
     cudnn.deterministic = True
     cudnn.benchmark = False
 
+    # load and normalize datasets
     if dataset == 'Botswana':
         data = loadmat('./datasets/Botswana.mat')
     elif dataset == 'KSC':
@@ -187,6 +195,7 @@ def UMAE_run(
     else:
         input = data['input']
 
+    # band normalization to [0,1]
     input_normalize = np.zeros(input.shape)
     for i in range(input.shape[2]):
         input_max = np.max(input[:,:,i])
@@ -194,13 +203,15 @@ def UMAE_run(
         input_normalize[:,:,i] = (input[:,:,i]-input_min)/(input_max-input_min)
     height, width, band = input.shape
     number_patches = band
-    
+
+    # pad HSI 
     mirror_image = mirror_hsi(height, width, band, input_normalize, patch=patches)
     
     all_pixel_positions = np.array([[i, j] for i in range(height) for j in range(width)])
     num_train_pixels = min(num_train_pixels, all_pixel_positions.shape[0])
     np.random.seed(seed)
 
+    # select training pixels via FPS algorithm
     sampled_pixel_positions, sample_indices = select_pixels_spectral_pca_fps(
         input_normalize=input_normalize,
         num_train_pixels=num_train_pixels,
@@ -208,6 +219,7 @@ def UMAE_run(
         n_pca=20
     )
 
+    # prepares training data patches and bands
     train_pixel_ids = sample_indices.copy()
     x_train_band, _, _ = train_and_test_data(
         mirror_image, band, 
@@ -219,6 +231,7 @@ def UMAE_run(
         flag='train'
     )
 
+    # prepares masked groups 
     masked_positional_generator = RandomMaskingGenerator(number_patches, mask_ratio)
     x_train = torch.from_numpy(np.transpose(x_train_band, (0, 2, 1))).type(torch.FloatTensor)
     bool_masked_pos_t = torch.zeros(x_train.shape[0], number_patches)
@@ -230,7 +243,8 @@ def UMAE_run(
     Label_train = Data.TensorDataset(x_train, bool_masked_pos_t, pixel_ids_tensor)
     label_train_loader = Data.DataLoader(Label_train, batch_size=batch_size, shuffle=True)
     size_patches = band_patches * patches ** 2
-    
+
+    # initializes ViT model 
     model = PretrainVisionTransformer(
         image_size = patches,
         near_band = band_patches,
@@ -252,7 +266,8 @@ def UMAE_run(
         emb_dropout = emb_dropout,
         mask_ratio = mask_ratio)
     model = model.cuda()
-    
+
+    #select loss and optimizer
     criterion = nn.MSELoss().cuda()
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=epoches//10, gamma=gamma, verbose=True)
@@ -260,6 +275,7 @@ def UMAE_run(
     import time
     print("Starting training")
     training_start_time = time.time()
+    # training loop 
     for epoch in range(epoches):
         model.train()
         objs = AverageMeter()
@@ -282,6 +298,7 @@ def UMAE_run(
             objs.update(loss.data, n)
         scheduler.step()
         print("Epoch: {:03d} train_loss: {:.8f}".format(epoch+1, objs.avg))
+        # Saves model checkpoint 
         if (epoch + 1) % save_ckpt_freq == 0 or epoch + 1 == epoches:
             checkpoint = {
                 'model': model.state_dict(),
@@ -313,6 +330,7 @@ def UMAE_run(
     total_training_time = training_end_time - training_start_time
     print(f"Training completed in {total_training_time:.2f} seconds ({total_training_time/60:.2f} minutes)")
 
+    # feature extraction stage
     print("Extraction:")
     extraction_start_time = time.time()
     checkpoint_path = os.path.join(output_dir, f'{experiment_name}_checkpoint-{epoches}.pth')
