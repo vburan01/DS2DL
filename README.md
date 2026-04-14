@@ -36,5 +36,36 @@ The algorithm is split up into two parts. the "run_latent.py" file is used to ge
 
 details on hyperparamters that reproduce figures from the paper are contained in the "best_hyperparameters.m" file. 
 
+# Citations
+
+Please kindly cite these papers if you find any of this code useful. 
+
+
+K. Cui, R. Li, S. L. Polk, Y. Lin, H. Zhang, J. M. Murphy, R. J. Plemmons, and R. H. Chan, “Superpixel-based and spatially regularized diffusion learning for unsupervised hyperspectral image clustering,” IEEE Transactions on Geoscience and Remote Sensing, vol. 62, pp. 1–18, 2024
+
+  
+      @ARTICLE{Cui2024S2DL,
+        title={Superpixel-Based and Spatially Regularized Diffusion Learning for Unsupervised Hyperspectral Image Clustering},
+        author={Cui, Kangning and Li, Ruoning and Polk, Sam L. and Lin, Yinyi and Zhang, Hongsheng and Murphy, James M. and Plemmons, Robert J. and Chan, Raymond H.},
+        journal={IEEE Transactions on Geoscience and Remote Sensing},
+        volume={62},
+        pages={1-18},
+        year={2024},
+        doi={10.1109/TGRS.2024.XXXXX}
+      }
+    
+
+D. Ibañez, R. Fernandez-Beltran, F. Pla and N. Yokoya, "Masked Auto-Encoding Spectral–Spatial Transformer for Hyperspectral Image Classification," in IEEE Transactions on Geoscience and Remote Sensing, vol. 60, pp. 1-14, 2022, Art no. 5542614, doi: 10.1109/TGRS.2022.3217892.
+
+    @ARTICLE{9931741,
+      author={Ibañez, Damian and Fernandez-Beltran, Ruben and Pla, Filiberto and Yokoya, Naoto},
+      journal={IEEE Transactions on Geoscience and Remote Sensing}, 
+      title={Masked Auto-Encoding Spectral–Spatial Transformer for Hyperspectral Image Classification}, 
+      year={2022},
+      volume={60},
+      number={},
+      pages={1-14},
+      doi={10.1109/TGRS.2022.3217892}
+      }
 
   
