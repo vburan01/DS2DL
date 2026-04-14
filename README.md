@@ -4,7 +4,7 @@ This code is the implementation of **Deep Superpixel-based and Spatially regular
 
 DS2DL uses Matlab Toolboxes such as [Entropy Rate Superpixel](https://github.com/mingyuliutw/EntropyRateSuperpixel), and [Diffusion Learning](https://github.com/sampolk/DiffusionLearning).
 - Contact: vutichart.buranasiri@tufts.edu
-
+ 
   # How to run DS2DL:
 
 The algorithm is split up into two parts. the "run_latent.py" file is used to generate the compressed representation of the HSI from the Unsupervised Masked Autoencoder (UMAE) in Python, and saves it as a .mat file in the "outputs" folder. Then, the "DS2DL.m" file takes in a specfied .mat file from the "outputs" folder based on user prompts, and runs the modified S2DL algorithm using the compressed latent. The steps to run this code are outlined below as follows.  
@@ -66,4 +66,4 @@ D. Ibañez, R. Fernandez-Beltran, F. Pla and N. Yokoya, "Masked Auto-Encoding Sp
       doi={10.1109/TGRS.2022.3217892}
       }
 
-  
+   (c) Vutichart Buranasiri, 2026
