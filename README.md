@@ -15,15 +15,13 @@ The algorithm is split up into two parts. the "run_latent.py" file is used to ge
 
   2. run "run_latent.py" with desired hyperparameters. An example command line is as follows:
 
-      python run_latent.py --num_train_pixels 600 --mask_ratio 0.65 --dataset Botswana
+      `python run_latent.py --num_train_pixels 600 --mask_ratio 0.65 --dataset Botswana`
 
   After the code as finished running, this will produce a file "Botswana_FPS600_MR0.65.mat" in the outputs folder. 
 
   3. open and run the DS2DL file and input the prompts based on the previous hyperparameters chosen. An example is given as follows in the MATLAB terminal:
 
-     DS2DL.m
-     600
-     0.65
+     `DS2DL.m 600 0.65`
 
   The clustering results will be displayed in the MATLAB terminal. 
 
