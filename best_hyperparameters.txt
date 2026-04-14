@@ -175,7 +175,7 @@ KSC Dataset:
 
             UMAE parameters:
 
-                n_t = 400
+                n_t = 600
                 R_m = 0.5
 
             Modified S2DL parameters: 
